@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
+import Login from "./Login";
 import Main from "./Main";
 import Footer from "./Footer";
+import ProtectedRoute from "./ProtectedRoute";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
+import InfoTooltip from "./InfoTooltip";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -21,6 +25,7 @@ function App() {
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(true);
 
   useEffect(() => {
     api
@@ -148,18 +153,31 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="App">
+      <div className="page">
         <Header />
 
-        <Main
-          cards={cards}
-          onCardsLike={handleCardLike}
-          onCardClick={handleCardClick}
-          onEditProfile={handleEditProfileClick}
-          onEditAvatar={handleEditAvatarClick}
-          onAddPlace={handleAddPlaceClick}
-          onConfirmDelete={handleConfirmDeleteClick}
-        />
+        <Switch>
+          <Route path="/sing-up"></Route>
+
+          <Route path="/sing-in">
+            <Login />
+          </Route>
+
+          <Route path="/">
+            <ProtectedRoute
+              path="/main"
+              loggedIn={loggedIn}
+              component={Main}
+              cards={cards}
+              onCardsLike={handleCardLike}
+              onCardClick={handleCardClick}
+              onEditProfile={handleEditProfileClick}
+              onEditAvatar={handleEditAvatarClick}
+              onAddPlace={handleAddPlaceClick}
+              onConfirmDelete={handleConfirmDeleteClick}
+            />
+          </Route>
+        </Switch>
 
         <Footer />
 
@@ -189,6 +207,8 @@ function App() {
         />
 
         <ImagePopup card={selectedCardView} onClose={closeAllPopups} />
+
+        <InfoTooltip />
       </div>
     </CurrentUserContext.Provider>
   );

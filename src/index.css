@@ -8,13 +8,15 @@
 
 /* header */
 
-
 @import url(./bloks/header/header.css);
 
 @import url(./bloks/logo/logo.css);
 
-/* profile */
+/* login */
 
+@import url(./bloks/form-container/form-container.css);
+
+/* profile */
 
 @import url(./bloks/profile/profile.css);
 
@@ -35,7 +37,6 @@
 @import url(./bloks/opacity/opacity.css);
 
 /* grid-cards */
-
 
 @import url(./bloks/grid-cards/grid-cards.css);
 
@@ -61,13 +62,11 @@
 
 /* footer */
 
-
 @import url(./bloks/footer/footer.css);
 
 @import url(./bloks/footer/__author/footer__author.css);
 
 /* popup */
-
 
 @import url(./bloks/popup/popup.css);
 
@@ -79,7 +78,15 @@
 
 @import url(./bloks/popup/__close-button/popup__close-button.css);
 
+@import url(./bloks/popup/__info-tooltip/popup__info-tooltip.css);
+
 @import url(./bloks/form/form.css);
+
+@import url(./bloks/form/__info-icon/form__info-icon.css);
+
+@import url(./bloks/form/__info-icon/_success/form__info-icon_success.css);
+
+@import url(./bloks/form/__info-icon/_fail/form__info-icon_fail.css);
 
 @import url(./bloks/form/__margin/form__margin.css);
 
