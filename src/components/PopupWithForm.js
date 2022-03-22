@@ -38,7 +38,7 @@ function PopupWithForm({
           type="button"
         ></button>
         <form className="form" name={`${name}-form`} onSubmit={onSubmit}>
-          <h2 className="form__title">{title}</h2>
+          <h2 className="form__title form__title_theme_white">{title}</h2>
           {children}
           <input
             className="form__submit"

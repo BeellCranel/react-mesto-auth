@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Login() {
+function Register() {
   const currentUser = useContext(CurrentUserContext);
   return (
     <main className="content">
       <div className="form-container">
-        <form className="form" name="login">
-          <h2 className="form__title form__title_theme_dark">Вход</h2>
+        <form className="form" name="register">
+          <h2 className="form__title form__title_theme_dark">Регистрация</h2>
           <fieldset className="form__fieldset">
             <label className="form__field">
               <input
@@ -38,12 +39,13 @@ function Login() {
             className="form__submit form__submit_theme_dark"
             type="submit"
             name="submit"
-            value="Войти"
+            value="Зарегистрироваться"
           />
+          <Link to="/sing-in" className="form__link opacity">Уже зарегистрированы? Войти</Link>
         </form>
       </div>
     </main>
   );
 }
 
-export default Login;
+export default Register;

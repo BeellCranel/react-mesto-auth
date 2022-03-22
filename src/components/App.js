@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import Login from "./Login";
+import Register from "./Register";
 import Main from "./Main";
 import Footer from "./Footer";
 import ProtectedRoute from "./ProtectedRoute";
@@ -24,8 +25,11 @@ function App() {
   const [selectedCardView, setSelectedCardView] = useState(null);
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
   const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [currentUser, setCurrentUser] = useState({
+    loggedIn: false,
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     api
@@ -157,7 +161,9 @@ function App() {
         <Header />
 
         <Switch>
-          <Route path="/sing-up"></Route>
+          <Route path="/sing-up">
+            <Register />
+          </Route>
 
           <Route path="/sing-in">
             <Login />
@@ -166,7 +172,6 @@ function App() {
           <Route path="/">
             <ProtectedRoute
               path="/main"
-              loggedIn={loggedIn}
               component={Main}
               cards={cards}
               onCardsLike={handleCardLike}
