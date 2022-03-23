@@ -25,11 +25,9 @@ function App() {
   const [selectedCardView, setSelectedCardView] = useState(null);
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
   const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState({
-    loggedIn: false,
-    email: "",
-    password: "",
-  });
+  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [linkToggleState, setLinkToggleState] = useState(true);
 
   useEffect(() => {
     api
@@ -73,6 +71,16 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCardView(card);
+  }
+
+  //  функционал menu
+
+  function handleMenuLinkClick() {
+    if (linkToggleState) {
+      setLinkToggleState(false);
+    } else {
+      setLinkToggleState(true);
+    }
   }
 
   // функционал попапа редактирования аватара
@@ -158,11 +166,15 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header
+          loggedIn={loggedIn}
+          linkToggleState={linkToggleState}
+          onLinkClick={handleMenuLinkClick}
+        />
 
         <Switch>
           <Route path="/sing-up">
-            <Register />
+            <Register onLinkClick={handleMenuLinkClick} />
           </Route>
 
           <Route path="/sing-in">
@@ -173,6 +185,7 @@ function App() {
             <ProtectedRoute
               path="/main"
               component={Main}
+              loggedIn={loggedIn}
               cards={cards}
               onCardsLike={handleCardLike}
               onCardClick={handleCardClick}

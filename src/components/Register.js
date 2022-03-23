@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Register() {
-  const currentUser = useContext(CurrentUserContext);
+function Register({ onLinkClick }) {
   return (
     <main className="content">
       <div className="form-container">
@@ -41,7 +39,13 @@ function Register() {
             name="submit"
             value="Зарегистрироваться"
           />
-          <Link to="/sing-in" className="form__link opacity">Уже зарегистрированы? Войти</Link>
+          <Link
+            to="/sing-in"
+            className="form__link opacity"
+            onClick={onLinkClick}
+          >
+            Уже зарегистрированы? Войти
+          </Link>
         </form>
       </div>
     </main>
