@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import React from "react";
 
 function Login() {
-  const currentUser = useContext(CurrentUserContext);
   return (
     <main className="content">
       <div className="form-container">

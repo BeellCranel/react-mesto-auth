@@ -26,7 +26,7 @@ function App() {
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [linkToggleState, setLinkToggleState] = useState(true);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
+      <div className="app">
         <Header
           loggedIn={loggedIn}
           linkToggleState={linkToggleState}

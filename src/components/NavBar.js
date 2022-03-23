@@ -5,9 +5,18 @@ function NavBar({ loggedIn, linkToggleState, onLinkClick }) {
   return (
     <nav className="menu">
       {loggedIn ? (
-        <Link className="menu__item opacity" to="/sing-in">
-          Выйти
-        </Link>
+        <>
+          <div className="menu__item menu__item_email menu__item_disabled">
+            dergachroma@gmail.com
+          </div>
+          <Link
+            className="menu__item menu__item_exit menu__item_disabled opacity"
+            to="/sing-in"
+          >
+            Выйти
+          </Link>
+          <button className="menu__nav-button opacity" type="button" />
+        </>
       ) : (
         <Link
           className="menu__item opacity"
