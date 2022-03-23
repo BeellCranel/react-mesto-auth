@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import NavPopup from "./NavPopup";
 import Header from "./Header";
 import Login from "./Login";
 import Register from "./Register";
@@ -17,6 +18,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   // обьявляем стэйт переменные
+  const [isNavPopupToggle, setIsNavPopupToggle] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -60,6 +62,16 @@ function App() {
     setSelectedCardDelete(null);
   }
 
+  // функционал NavPopup
+
+  function handleNavPopupToggle() {
+    if (isNavPopupToggle) {
+      setIsNavPopupToggle(false);
+    } else {
+      setIsNavPopupToggle(true);
+    }
+  }
+
   // функционал попапа подтверждения удаления карточки
 
   function handleConfirmDeleteClick(card) {
@@ -73,7 +85,7 @@ function App() {
     setSelectedCardView(card);
   }
 
-  //  функционал menu
+  //  функционал NavBar
 
   function handleMenuLinkClick() {
     if (linkToggleState) {
@@ -166,9 +178,12 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
+        <NavPopup onToggle={isNavPopupToggle} />
+
         <Header
           loggedIn={loggedIn}
           linkToggleState={linkToggleState}
+          onNavButtonClick={handleNavPopupToggle}
           onLinkClick={handleMenuLinkClick}
         />
 

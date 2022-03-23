@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function NavBar({ loggedIn, linkToggleState, onLinkClick }) {
+function NavBar({ loggedIn, linkToggleState, onNavButtonClick,  onLinkClick }) {
   return (
     <nav className="menu">
       {loggedIn ? (
@@ -15,7 +15,7 @@ function NavBar({ loggedIn, linkToggleState, onLinkClick }) {
           >
             Выйти
           </Link>
-          <button className="menu__nav-button opacity" type="button" />
+          <button className="menu__nav-button opacity" onClick={onNavButtonClick} type="button" />
         </>
       ) : (
         <Link
