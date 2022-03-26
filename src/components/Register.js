@@ -1,11 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Register({ onLinkClick }) {
+function Register({
+  handleRegister,
+  onLinkClick,
+}) {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = userData;
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleRegister(email, password);
+  }
+
   return (
     <main className="content">
       <div className="form-container">
-        <form className="form" name="register">
+        <form className="form" onSubmit={handleSubmit} name="register">
           <h2 className="form__title form__title_theme_dark">Регистрация</h2>
           <fieldset className="form__fieldset">
             <label className="form__field">
@@ -14,6 +37,8 @@ function Register({ onLinkClick }) {
                 id="login-email"
                 type="email"
                 name="email"
+                value={email}
+                onChange={handleChange}
                 placeholder="Email"
                 required
               />
@@ -25,6 +50,8 @@ function Register({ onLinkClick }) {
                 id="login-password"
                 type="text"
                 name="password"
+                value={password}
+                onChange={handleChange}
                 placeholder="Пароль"
                 minLength="6"
                 maxLength="20"

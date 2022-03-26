@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
-function Login() {
+function Login({ handleLogin }) {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = userData;
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleLogin(email, password);
+  }
+
   return (
     <main className="content">
       <div className="form-container">
-        <form className="form" name="login">
+        <form className="form" onSubmit={handleSubmit} name="login">
           <h2 className="form__title form__title_theme_dark">Вход</h2>
           <fieldset className="form__fieldset">
             <label className="form__field">
@@ -13,6 +34,8 @@ function Login() {
                 id="login-email"
                 type="email"
                 name="email"
+                value={email}
+                onChange={handleChange}
                 placeholder="Email"
                 required
               />
@@ -24,6 +47,8 @@ function Login() {
                 id="login-password"
                 type="text"
                 name="password"
+                value={password}
+                onChange={handleChange}
                 placeholder="Пароль"
                 minLength="6"
                 maxLength="20"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import NavPopup from "./NavPopup";
 import Header from "./Header";
 import Login from "./Login";
@@ -25,6 +25,9 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
+  const [isInfoTooltip, setIsInfoTooltip] = useState(false);
+  // поведение попапа отображения результатов регистрации
+  const [isSuccessMessageTog, setIsSuccessMessageTog] = useState();
   // стэйт для попапа простотра изображений
   const [selectedCardView, setSelectedCardView] = useState(null);
   // стэйт для удаления карточек
@@ -34,12 +37,11 @@ function App() {
   // стэйт основных данных
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-  });
+  const [userData, setUserData] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const history = useHistory();
 
+  // первичная загрузка профеля пользователся
   useEffect(() => {
     api
       .getUserInfo()
@@ -51,6 +53,7 @@ function App() {
       });
   }, []);
 
+  // первичная загрузка карточек на страницу
   useEffect(() => {
     api
       .getCards()
@@ -62,13 +65,93 @@ function App() {
       });
   }, []);
 
+  // первичная проверка токена пользователя
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
+    setIsInfoTooltip(false);
     setSelectedCardView(null);
     setSelectedCardDelete(null);
+  }
+
+  // функционал попапа отображения результатов регистрации
+
+  function handleInfoTooltipOpen() {
+    setIsInfoTooltip(true);
+  }
+
+  // функционал логина
+
+  function handleLogin(email, password) {
+    mestoAuth
+      .login(email, password)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        setCurrentUser({
+          ...currentUser,
+          userEmail: email,
+        });
+        setLoggedIn(true);
+        history.push("/main");
+      })
+      .catch((err) => {
+        setIsSuccessMessageTog(false);
+        handleInfoTooltipOpen();
+        console.log(err);
+      });
+  }
+
+  function tokenCheck() {
+    const jwt = localStorage.getItem("jwt");
+    mestoAuth
+      .getContent(jwt)
+      .then((res) => {
+        setUserData({
+          userEmail: res.data.email,
+        });
+        setLoggedIn(true);
+        history.push("/main");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    history.push("/sing-in");
+    setLoggedIn(false);
+  }
+
+  useEffect(() => {
+    if (loggedIn) {
+      history.push("/main");
+    }
+  }, [loggedIn]);
+
+  // функчионал регистрации
+
+  function handleRegister(email, password) {
+    mestoAuth
+      .register(email, password)
+      .then(() => {
+        setLinkToggleState(true);
+        history.push("/sing-in");
+        setIsSuccessMessageTog(true);
+        handleInfoTooltipOpen();
+      })
+      .catch((err) => {
+        setIsSuccessMessageTog(false);
+        handleInfoTooltipOpen();
+        console.log(err);
+      });
   }
 
   // функционал NavPopup
@@ -114,7 +197,10 @@ function App() {
     api
       .changeAvatar(link)
       .then((userInfo) => {
-        setCurrentUser(userInfo);
+        setCurrentUser({
+          ...currentUser,
+          ...userInfo,
+        });
         closeAllPopups();
       })
       .catch((err) => {
@@ -187,10 +273,12 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        <NavPopup onToggle={isNavPopupToggle} />
+        <NavPopup onToggle={isNavPopupToggle} handleLogout={handleLogout} />
 
         <Header
           loggedIn={loggedIn}
+          userData={userData}
+          handleLogout={handleLogout}
           linkToggleState={linkToggleState}
           onNavButtonClick={handleNavPopupToggle}
           onLinkClick={handleMenuLinkClick}
@@ -198,11 +286,15 @@ function App() {
 
         <Switch>
           <Route path="/sing-up">
-            <Register onLinkClick={handleMenuLinkClick} />
+            <Register
+              handleRegister={handleRegister}
+              handleInfoTooltipOpen={handleInfoTooltipOpen}
+              onLinkClick={handleMenuLinkClick}
+            />
           </Route>
 
           <Route path="/sing-in">
-            <Login />
+            <Login handleLogin={handleLogin} />
           </Route>
 
           <Route path="/">
@@ -250,7 +342,11 @@ function App() {
 
         <ImagePopup card={selectedCardView} onClose={closeAllPopups} />
 
-        <InfoTooltip />
+        <InfoTooltip
+          isOpen={isInfoTooltip}
+          isSuccessMessageTog={isSuccessMessageTog}
+          onClose={closeAllPopups}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

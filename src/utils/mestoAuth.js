@@ -5,11 +5,7 @@ function checkResponse(response) {
     return response.json();
   }
   return response.json().then((data) => {
-    const { statusCode } = data;
-    const { message } = data.message[0].messages[0];
-    const error = new Error(message || "Что-то пошло не так");
-    error.status = statusCode;
-    throw error;
+    throw data;
   });
 }
 
@@ -20,23 +16,29 @@ export function register(email, password) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      password: password,
+      email: email,
+    }),
   }).then(checkResponse);
 }
 
 export function login(identifier, password) {
-  return fetch(`${baseUrl}/singin`, {
+  return fetch(`${baseUrl}/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ identifier, password }),
+    body: JSON.stringify({
+      password: password,
+      email: identifier,
+    }),
   }).then(checkResponse);
 }
 
 export function getContent(token) {
-  return (`${baseUrl}/users/me`,
+  return fetch(`${baseUrl}/users/me`,
   {
     method: "GET",
     headers: {

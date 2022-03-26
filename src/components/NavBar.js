@@ -1,21 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function NavBar({ loggedIn, linkToggleState, onNavButtonClick,  onLinkClick }) {
+function NavBar({
+  loggedIn,
+  userData,
+  handleLogout,
+  linkToggleState,
+  onNavButtonClick,
+  onLinkClick,
+}) {
   return (
     <nav className="menu">
       {loggedIn ? (
         <>
           <div className="menu__item menu__item_email menu__item_disabled">
-            dergachroma@gmail.com
+            {userData.userEmail}
           </div>
-          <Link
+          <div
             className="menu__item menu__item_exit menu__item_disabled opacity"
-            to="/sing-in"
+            onClick={handleLogout}
           >
             Выйти
-          </Link>
-          <button className="menu__nav-button opacity" onClick={onNavButtonClick} type="button" />
+          </div>
+          <button
+            className="menu__nav-button opacity"
+            onClick={onNavButtonClick}
+            type="button"
+          />
         </>
       ) : (
         <Link
