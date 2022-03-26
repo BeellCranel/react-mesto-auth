@@ -14,6 +14,7 @@ import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import InfoTooltip from "./InfoTooltip";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
+import * as mestoAuth from "../utils/mestoAuth";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
