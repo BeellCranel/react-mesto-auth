@@ -17,19 +17,27 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  // обьявляем стэйт переменные
+  // стэйт интерактивности попапов
   const [isNavPopupToggle, setIsNavPopupToggle] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
+  // стэйт для попапа простотра изображений
   const [selectedCardView, setSelectedCardView] = useState(null);
+  // стэйт для удаления карточек
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
+  // стэйт логики поведения навигационных ссылок
+  const [linkToggleState, setLinkToggleState] = useState(true);
+  // стэйт основных данных
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(true);
-  const [linkToggleState, setLinkToggleState] = useState(true);
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     api
