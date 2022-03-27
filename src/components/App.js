@@ -41,35 +41,34 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
 
-  // первичная загрузка профеля пользователся
-  useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-      })
-      .catch((err) => {
-        console.log(`Ошибка получения данных о пользователе: ${err}`);
-      });
-  }, []);
-
-  // первичная загрузка карточек на страницу
-  useEffect(() => {
-    api
-      .getCards()
-      .then((cardsArr) => {
-        setCards(cardsArr);
-      })
-      .catch((err) => {
-        console.log(`Ошибка загрузки карточек с сервера: ${err}`);
-      });
-  }, [userData]);
-
   // первичная проверка токена пользователя
 
   useEffect(() => {
     tokenCheck();
   }, []);
+
+  // первичная загрузка профеля пользователся и карточек
+  useEffect(() => {
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((userInfo) => {
+          setCurrentUser(userInfo);
+        })
+        .catch((err) => {
+          console.log(`Ошибка получения данных о пользователе: ${err}`);
+        });
+
+      api
+        .getCards()
+        .then((cardsArr) => {
+          setCards(cardsArr);
+        })
+        .catch((err) => {
+          console.log(`Ошибка загрузки карточек с сервера: ${err}`);
+        });
+    }
+  }, [loggedIn]);
 
   //функция закрытия всех попапов
 
@@ -97,7 +96,7 @@ function App() {
       .login(email, password)
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        setLoggedIn(true);
+        tokenCheck();
       })
       .catch((err) => {
         setIsSuccessMessageTog(false);
@@ -111,38 +110,33 @@ function App() {
     mestoAuth
       .getContent(jwt)
       .then((res) => {
-        setUserData({
-          ...userData,
-          userEmail: res.data.email,
-        });
-        setLoggedIn(true);
-        history.push("/main");
+        if (res.data) {
+          setUserData({
+            userEmail: res.data.email,
+          });
+          setLoggedIn(true);
+          history.push("/main");
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  useEffect(() => {
-    if (loggedIn) {
-      tokenCheck();
-    }
-  }, [loggedIn]);
-
   function handleLogout() {
     localStorage.removeItem("jwt");
-    history.push("/sing-in");
+    history.push("/sign-in");
     setLoggedIn(false);
   }
 
-  // функчионал регистрации
+  // функционал регистрации
 
   function handleRegister(email, password) {
     mestoAuth
       .register(email, password)
       .then(() => {
         setLinkToggleState(true);
-        history.push("/sing-in");
+        history.push("/sign-in");
         setIsSuccessMessageTog(true);
         handleInfoTooltipOpen();
       })
@@ -287,7 +281,7 @@ function App() {
         />
 
         <Switch>
-          <Route path="/sing-up">
+          <Route path="/sign-up">
             <Register
               handleRegister={handleRegister}
               handleInfoTooltipOpen={handleInfoTooltipOpen}
@@ -295,7 +289,7 @@ function App() {
             />
           </Route>
 
-          <Route path="/sing-in">
+          <Route path="/sign-in">
             <Login handleLogin={handleLogin} />
           </Route>
 

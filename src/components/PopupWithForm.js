@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 
 function PopupWithForm({
   isOpen,
@@ -9,28 +9,16 @@ function PopupWithForm({
   subBtnText,
   children,
 }) {
-  useEffect(() => {
-    function closeByEscape(event) {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    }
-
-    document.addEventListener("keydown", closeByEscape);
-    return () => document.removeEventListener("keydown", closeByEscape);
-  });
-
   function handleOnClose(event) {
     if (event.target.classList.contains("popup_opened")) {
       onClose();
     }
   }
 
+  const popupClassName = `popup ${isOpen ? "popup_opened" : ""}`;
+
   return (
-    <div
-      className={isOpen ? `popup popup_opened` : `popup`}
-      onClick={handleOnClose}
-    >
+    <div className={popupClassName} onClick={handleOnClose}>
       <div className="popup__content">
         <button
           className="popup__close-button opacity"

@@ -38,13 +38,13 @@ export function login(identifier, password) {
 }
 
 export function getContent(token) {
-  return fetch(`${baseUrl}/users/me`,
-  {
+  return fetch(`${baseUrl}/users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => res.json());
+  })
+    .then(checkResponse);
 }

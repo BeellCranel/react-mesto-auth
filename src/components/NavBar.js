@@ -19,6 +19,10 @@ function NavBar({
     }
   }
 
+  const menuBtnClassName = `menu__nav-button${
+    !onToggle ? "" : "_close"
+  }  opacity`;
+
   return (
     <nav className="menu">
       {loggedIn ? (
@@ -33,11 +37,7 @@ function NavBar({
             Выйти
           </div>
           <button
-            className={
-              !onToggle
-                ? `menu__nav-button opacity`
-                : `menu__nav-button_close opacity`
-            }
+            className={menuBtnClassName}
             onClick={handleTogglePopup}
             type="button"
           />
@@ -46,7 +46,7 @@ function NavBar({
         <Link
           className="menu__item opacity"
           onClick={onLinkClick}
-          to={linkToggleState ? "/sing-up" : "/sing-in"}
+          to={linkToggleState ? "/sign-up" : "/sign-in"}
         >
           {linkToggleState ? "Регистрация" : "Войти"}
         </Link>

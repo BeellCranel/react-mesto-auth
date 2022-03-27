@@ -1,8 +1,18 @@
 import React from "react";
 
 function InfoTooltip({ isOpen, isSuccessMessageTog, onClose }) {
+  const popupClassName = `popup ${isOpen ? "popup_opened" : ""}`;
+
+  const iconClassName = `form__info-icon ${
+    isSuccessMessageTog ? "form__info-icon_success" : `form__info-icon_fail`
+  }`;
+
+  const subtitleClassName = isSuccessMessageTog
+    ? "Вы успешно зарегистрировались!"
+    : "Что-то пошло не так! Попробуйте ещё раз.";
+
   return (
-    <div className={isOpen ? `popup popup_opened` : `popup`}>
+    <div className={popupClassName}>
       <div className="popup__content">
         <div className="popup__info-tooltip">
           <button
@@ -11,19 +21,8 @@ function InfoTooltip({ isOpen, isSuccessMessageTog, onClose }) {
             type="button"
           />
           <form className="form">
-            <div
-              className={
-                isSuccessMessageTog
-                  ? `form__info-icon form__info-icon_success`
-                  : `form__info-icon form__info-icon_fail`
-              }
-            />
-            <h2 className="form__title">
-              {isSuccessMessageTog
-                ? `Вы успешно зарегистрировались!`
-                : `Что-то пошло не так!
-Попробуйте ещё раз.`}
-            </h2>
+            <div className={iconClassName} />
+            <h2 className="form__title">{subtitleClassName}</h2>
           </form>
         </div>
       </div>

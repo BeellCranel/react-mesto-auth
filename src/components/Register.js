@@ -67,7 +67,7 @@ function Register({
             value="Зарегистрироваться"
           />
           <Link
-            to="/sing-in"
+            to="/sign-in"
             className="form__link opacity"
             onClick={onLinkClick}
           >
