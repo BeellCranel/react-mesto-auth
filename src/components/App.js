@@ -19,7 +19,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   // стэйт интерактивности попапов
-  const [isNavPopupToggle, setIsNavPopupToggle] = useState(false);
+  const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -63,7 +63,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка загрузки карточек с сервера: ${err}`);
       });
-  }, []);
+  }, [userData]);
 
   // первичная проверка токена пользователя
 
@@ -71,7 +71,10 @@ function App() {
     tokenCheck();
   }, []);
 
+  //функция закрытия всех попапов
+
   function closeAllPopups() {
+    setIsNavPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
@@ -94,12 +97,7 @@ function App() {
       .login(email, password)
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        setCurrentUser({
-          ...currentUser,
-          userEmail: email,
-        });
         setLoggedIn(true);
-        history.push("/main");
       })
       .catch((err) => {
         setIsSuccessMessageTog(false);
@@ -114,6 +112,7 @@ function App() {
       .getContent(jwt)
       .then((res) => {
         setUserData({
+          ...userData,
           userEmail: res.data.email,
         });
         setLoggedIn(true);
@@ -124,17 +123,17 @@ function App() {
       });
   }
 
+  useEffect(() => {
+    if (loggedIn) {
+      tokenCheck();
+    }
+  }, [loggedIn]);
+
   function handleLogout() {
     localStorage.removeItem("jwt");
     history.push("/sing-in");
     setLoggedIn(false);
   }
-
-  useEffect(() => {
-    if (loggedIn) {
-      history.push("/main");
-    }
-  }, [loggedIn]);
 
   // функчионал регистрации
 
@@ -156,12 +155,8 @@ function App() {
 
   // функционал NavPopup
 
-  function handleNavPopupToggle() {
-    if (isNavPopupToggle) {
-      setIsNavPopupToggle(false);
-    } else {
-      setIsNavPopupToggle(true);
-    }
+  function handleNavPopupOpen() {
+    setIsNavPopupOpen(true);
   }
 
   // функционал попапа подтверждения удаления карточки
@@ -273,14 +268,21 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        <NavPopup onToggle={isNavPopupToggle} handleLogout={handleLogout} />
+        <NavPopup
+          isOpen={isNavPopupOpen}
+          onClose={closeAllPopups}
+          handleLogout={handleLogout}
+          userData={userData}
+        />
 
         <Header
           loggedIn={loggedIn}
+          isOpen={handleNavPopupOpen}
+          onClose={closeAllPopups}
+          onToggle={isNavPopupOpen}
           userData={userData}
           handleLogout={handleLogout}
           linkToggleState={linkToggleState}
-          onNavButtonClick={handleNavPopupToggle}
           onLinkClick={handleMenuLinkClick}
         />
 

@@ -3,12 +3,22 @@ import { Link } from "react-router-dom";
 
 function NavBar({
   loggedIn,
+  isOpen,
+  onClose,
+  onToggle,
   userData,
   handleLogout,
   linkToggleState,
-  onNavButtonClick,
   onLinkClick,
 }) {
+  function handleTogglePopup() {
+    if (!onToggle) {
+      isOpen();
+    } else {
+      onClose();
+    }
+  }
+
   return (
     <nav className="menu">
       {loggedIn ? (
@@ -23,8 +33,12 @@ function NavBar({
             Выйти
           </div>
           <button
-            className="menu__nav-button opacity"
-            onClick={onNavButtonClick}
+            className={
+              !onToggle
+                ? `menu__nav-button opacity`
+                : `menu__nav-button_close opacity`
+            }
+            onClick={handleTogglePopup}
             type="button"
           />
         </>

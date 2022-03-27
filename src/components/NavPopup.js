@@ -1,10 +1,15 @@
 import React from "react";
 
-function NavPopup({ onToggle, handleLogout }) {
+function NavPopup({ isOpen, onClose, handleLogout, userData }) {
+  function logOut() {
+    handleLogout();
+    onClose();
+  }
+
   return (
-    <div className={onToggle ? `nav-popup nav-popup_opened` : `nav-popup`}>
-      <div className="menu__item menu__item_email">dergachroma@gmail.com</div>
-      <div className="menu__item menu__item_exit opacity" onClick={handleLogout}>
+    <div className={isOpen ? `nav-popup nav-popup_opened` : `nav-popup`}>
+      <div className="menu__item menu__item_email">{userData.userEmail}</div>
+      <div className="menu__item menu__item_exit opacity" onClick={logOut}>
         Выйти
       </div>
     </div>
