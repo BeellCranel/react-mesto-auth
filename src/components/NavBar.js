@@ -1,18 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 
 function NavBar({
-  loggedIn,
   isOpen,
   onClose,
-  onToggle,
+  isNavPopupOpen,
   userData,
   handleLogout,
-  linkToggleState,
-  onLinkClick,
 }) {
   function handleTogglePopup() {
-    if (!onToggle) {
+    if (!isNavPopupOpen) {
       isOpen();
     } else {
       onClose();
@@ -20,12 +17,12 @@ function NavBar({
   }
 
   const menuBtnClassName = `menu__nav-button${
-    !onToggle ? "" : "_close"
+    !isNavPopupOpen ? "" : "_close"
   }  opacity`;
 
   return (
     <nav className="menu">
-      {loggedIn ? (
+      <Route path="/main">
         <>
           <div className="menu__item menu__item_email menu__item_disabled">
             {userData.userEmail}
@@ -42,15 +39,17 @@ function NavBar({
             type="button"
           />
         </>
-      ) : (
-        <Link
-          className="menu__item opacity"
-          onClick={onLinkClick}
-          to={linkToggleState ? "/sign-up" : "/sign-in"}
-        >
-          {linkToggleState ? "Регистрация" : "Войти"}
+      </Route>
+      <Route path="/sign-in">
+        <Link className="menu__item opacity" to="/sign-up">
+          Регистрация
         </Link>
-      )}
+      </Route>
+      <Route path="/sign-up">
+        <Link className="menu__item opacity" to="/sign-in">
+          Войти
+        </Link>
+      </Route>
     </nav>
   );
 }

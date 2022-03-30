@@ -32,8 +32,6 @@ function App() {
   const [selectedCardView, setSelectedCardView] = useState(null);
   // стэйт для удаления карточек
   const [selectedCardDelete, setSelectedCardDelete] = useState(null);
-  // стэйт логики поведения навигационных ссылок
-  const [linkToggleState, setLinkToggleState] = useState(true);
   // стэйт основных данных
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -47,7 +45,7 @@ function App() {
     tokenCheck();
   }, []);
 
-  // первичная загрузка профеля пользователся и карточек
+  // загрузка профеля пользователя и карточек
   useEffect(() => {
     if (loggedIn) {
       api
@@ -107,20 +105,20 @@ function App() {
 
   function tokenCheck() {
     const jwt = localStorage.getItem("jwt");
-    mestoAuth
-      .getContent(jwt)
-      .then((res) => {
-        if (res.data) {
+    if (jwt) {
+      mestoAuth
+        .getContent(jwt)
+        .then((res) => {
           setUserData({
             userEmail: res.data.email,
           });
           setLoggedIn(true);
           history.push("/main");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
   }
 
   function handleLogout() {
@@ -135,7 +133,6 @@ function App() {
     mestoAuth
       .register(email, password)
       .then(() => {
-        setLinkToggleState(true);
         history.push("/sign-in");
         setIsSuccessMessageTog(true);
         handleInfoTooltipOpen();
@@ -143,11 +140,11 @@ function App() {
       .catch((err) => {
         setIsSuccessMessageTog(false);
         handleInfoTooltipOpen();
-        console.log(err);
+        console.log(err.error);
       });
   }
 
-  // функционал NavPopup
+  // функционал попапа с навигационным меню
 
   function handleNavPopupOpen() {
     setIsNavPopupOpen(true);
@@ -164,16 +161,6 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCardView(card);
-  }
-
-  //  функционал NavBar
-
-  function handleMenuLinkClick() {
-    if (linkToggleState) {
-      setLinkToggleState(false);
-    } else {
-      setLinkToggleState(true);
-    }
   }
 
   // функционал попапа редактирования аватара
@@ -270,14 +257,11 @@ function App() {
         />
 
         <Header
-          loggedIn={loggedIn}
           isOpen={handleNavPopupOpen}
           onClose={closeAllPopups}
-          onToggle={isNavPopupOpen}
+          isNavPopupOpen={isNavPopupOpen}
           userData={userData}
           handleLogout={handleLogout}
-          linkToggleState={linkToggleState}
-          onLinkClick={handleMenuLinkClick}
         />
 
         <Switch>
@@ -285,7 +269,6 @@ function App() {
             <Register
               handleRegister={handleRegister}
               handleInfoTooltipOpen={handleInfoTooltipOpen}
-              onLinkClick={handleMenuLinkClick}
             />
           </Route>
 

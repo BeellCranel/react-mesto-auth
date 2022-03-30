@@ -3,27 +3,21 @@ import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 
 function Header({
-  loggedIn,
   isOpen,
   onClose,
-  onToggle,
+  isNavPopupOpen,
   userData,
   handleLogout,
-  linkToggleState,
-  onLinkClick,
 }) {
   return (
     <header className="header">
       <Link className="logo opacity" to="/" />
       <NavBar
-        loggedIn={loggedIn}
         isOpen={isOpen}
         onClose={onClose}
-        onToggle={onToggle}
+        isNavPopupOpen={isNavPopupOpen}
         userData={userData}
         handleLogout={handleLogout}
-        linkToggleState={linkToggleState}
-        onLinkClick={onLinkClick}
       />
     </header>
   );

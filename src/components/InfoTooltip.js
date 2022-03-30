@@ -3,8 +3,8 @@ import React from "react";
 function InfoTooltip({ isOpen, isSuccessMessageTog, onClose }) {
   const popupClassName = `popup ${isOpen ? "popup_opened" : ""}`;
 
-  const iconClassName = `form__info-icon ${
-    isSuccessMessageTog ? "form__info-icon_success" : `form__info-icon_fail`
+  const iconClassName = `form__info-icon form__info-icon${
+    isSuccessMessageTog ? "_success" : `_fail`
   }`;
 
   const subtitleClassName = isSuccessMessageTog

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Register({
-  handleRegister,
-  onLinkClick,
-}) {
+function Register({ handleRegister }) {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -66,11 +63,7 @@ function Register({
             name="submit"
             value="Зарегистрироваться"
           />
-          <Link
-            to="/sign-in"
-            className="form__link opacity"
-            onClick={onLinkClick}
-          >
+          <Link className="form__link opacity" to="/sign-in">
             Уже зарегистрированы? Войти
           </Link>
         </form>
