@@ -21,7 +21,6 @@
 ![html](https://img.shields.io/badge/-HTML5-090909?style=flat&logo=html5)
 ![npm](https://img.shields.io/badge/-npm-090909?style=flat&logo=npm)
 ![git](https://img.shields.io/badge/-git-090909?style=flat&logo=git)
-![webpack](https://img.shields.io/badge/-Webpuck-090909?style=flat&logo=webpack)
 
 ### Интро
 
