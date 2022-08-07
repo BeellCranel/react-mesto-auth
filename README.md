@@ -28,7 +28,7 @@
 
 ### Heroku
 
-- [ссылка на мою работу в Heroku](https://mesto-react-auth.herokuapp.com/)
+- [ссылка на мою работу в Heroku](https://react-mesto-auth.herokuapp.com/)
 
 ### Статус
 
