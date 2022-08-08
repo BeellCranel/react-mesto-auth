@@ -11,7 +11,7 @@ function Header({
 }) {
   return (
     <header className="header">
-      <Link className="logo opacity" to="/" />
+      <Link className="logo opacity" to="/main" />
       <NavBar
         isOpen={isOpen}
         onClose={onClose}
